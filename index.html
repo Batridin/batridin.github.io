@@ -93,6 +93,7 @@
   <script>
     // JavaScript код
     var nickname = "";
+    var messages = [];
 
     function setNickname() {
       var nicknameInput = document.getElementById("nickname-input");
@@ -139,6 +140,12 @@
         messageContainer.appendChild(newMessage);
 
         messageInput.value = "";
+
+        messages.push({
+          nickname: nickname,
+          message: message,
+          timestamp: timestamp
+        });
       }
     }
 
@@ -158,6 +165,13 @@
       if (event.keyCode === 13) {
         event.preventDefault();
         sendMessage();
+      }
+    });
+
+    messageInput.addEventListener("click", function() {
+      if (nickname !== "") {
+        messageInput.disabled = false;
+        sendButton.disabled = false;
       }
     });
 
@@ -189,6 +203,33 @@
       nicknamePlaceholder.placeholder = translations[lang].nicknamePlaceholder;
       messagePlaceholder.placeholder = translations[lang].messagePlaceholder;
       sendButtonText.innerText = translations[lang].send;
+    }
+
+    // Восстановление сохраненных сообщений
+    var messageContainer = document.getElementById("message-container");
+
+    for (var i = 0; i < messages.length; i++) {
+      var savedMessage = messages[i];
+
+      var newMessage = document.createElement("div");
+      newMessage.classList.add("message");
+
+      var authorSpan = document.createElement("span");
+      authorSpan.classList.add("author");
+      authorSpan.innerText = savedMessage.nickname + ":";
+
+      var timestampSpan = document.createElement("span");
+      timestampSpan.classList.add("timestamp");
+      timestampSpan.innerText = savedMessage.timestamp;
+
+      var messageParagraph = document.createElement("p");
+      messageParagraph.innerText = savedMessage.message;
+
+      newMessage.appendChild(authorSpan);
+      newMessage.appendChild(timestampSpan);
+      newMessage.appendChild(messageParagraph);
+
+      messageContainer.appendChild(newMessage);
     }
   </script>
 </body>
