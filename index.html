@@ -59,6 +59,8 @@
     }
 
     #input-container button {
+      display: block;
+      margin-top: 10px;
       padding: 10px 20px;
       font-size: 14px;
       border-radius: 5px;
@@ -82,15 +84,35 @@
   </div>
 
   <div id="input-container">
-    <input type="text" id="message-input" placeholder="Введите сообщение">
-    <button id="send-button">Отправить</button>
+    <input type="text" id="nickname-input" placeholder="Никнейм">
+    <br>
+    <input type="text" id="message-input" placeholder="Введите сообщение" disabled>
+    <button id="send-button" disabled>Отправить</button>
   </div>
 
   <script>
     // JavaScript код
+    var nickname = "";
+
+    function setNickname() {
+      var nicknameInput = document.getElementById("nickname-input");
+      var messageInput = document.getElementById("message-input");
+      var sendButton = document.getElementById("send-button");
+
+      nickname = nicknameInput.value.trim();
+
+      if (nickname !== "") {
+        nicknameInput.disabled = true;
+        messageInput.disabled = false;
+        sendButton.disabled = false;
+        messageInput.focus();
+      }
+    }
+
     function sendMessage() {
-      var inputElement = document.getElementById("message-input");
-      var message = inputElement.value;
+      var messageInput = document.getElementById("message-input");
+      var message = messageInput.value.trim();
+
       if (message !== "") {
         var messageContainer = document.getElementById("message-container");
 
@@ -99,7 +121,7 @@
 
         var authorSpan = document.createElement("span");
         authorSpan.classList.add("author");
-        authorSpan.innerText = "Пользователь3:";
+        authorSpan.innerText = nickname + ":";
 
         var timestampSpan = document.createElement("span");
         timestampSpan.classList.add("timestamp");
@@ -116,12 +138,28 @@
 
         messageContainer.appendChild(newMessage);
 
-        inputElement.value = "";
+        messageInput.value = "";
       }
     }
 
+    var nicknameInput = document.getElementById("nickname-input");
+    nicknameInput.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        setNickname();
+      }
+    });
+
     var sendButton = document.getElementById("send-button");
     sendButton.addEventListener("click", sendMessage);
+
+    var messageInput = document.getElementById("message-input");
+    messageInput.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
 
     // Определение языка браузера и применение перевода
     var userLanguage = navigator.language || navigator.userLanguage;
@@ -129,23 +167,27 @@
     var translations = {
       'ru': {
         'welcome': 'Добро пожаловать!',
-        'placeholder': 'Введите сообщение',
+        'nicknamePlaceholder': 'Введите никнейм',
+        'messagePlaceholder': 'Введите сообщение',
         'send': 'Отправить'
       },
       'en': {
         'welcome': 'Welcome!',
-        'placeholder': 'Enter a message',
+        'nicknamePlaceholder': 'Enter a nickname',
+        'messagePlaceholder': 'Enter a message',
         'send': 'Send'
       }
     };
 
     var welcomeElement = document.querySelector('h1');
-    var inputPlaceholder = document.getElementById('message-input');
+    var nicknamePlaceholder = document.getElementById('nickname-input');
+    var messagePlaceholder = document.getElementById('message-input');
     var sendButtonText = document.getElementById('send-button');
 
     if (translations[lang]) {
       welcomeElement.innerText = translations[lang].welcome;
-      inputPlaceholder.placeholder = translations[lang].placeholder;
+      nicknamePlaceholder.placeholder = translations[lang].nicknamePlaceholder;
+      messagePlaceholder.placeholder = translations[lang].messagePlaceholder;
       sendButtonText.innerText = translations[lang].send;
     }
   </script>
