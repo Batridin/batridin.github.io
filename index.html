@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>hype</title>
+  <style>
+    /* Стили CSS */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #121212;
+      color: #fff;
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+    }
+
+    #message-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    #message-container .message {
+      background-color: #333;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    #message-container .message .author {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    #message-container .message .timestamp {
+      color: #999;
+      font-size: 12px;
+    }
+
+    #input-container {
+      margin-top: 20px;
+    }
+
+    #input-container input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      outline: none;
+    }
+
+    #input-container input[type="text"]::placeholder {
+      color: #aaa;
+    }
+
+    #input-container button {
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 5px;
+      background-color: #6200ee;
+      color: #fff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    #input-container button:hover {
+      background-color: #9c47ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Добро пожаловать!</h1>
+
+  <div id="message-container">
+    
+  </div>
+
+  <div id="input-container">
+    <input type="text" id="message-input" placeholder="Введите сообщение">
+    <button id="send-button">Отправить</button>
+  </div>
+
+  <script>
+    // JavaScript код
+    function sendMessage() {
+      var inputElement = document.getElementById("message-input");
+      var message = inputElement.value;
+      if (message !== "") {
+        var messageContainer = document.getElementById("message-container");
+
+        var newMessage = document.createElement("div");
+        newMessage.classList.add("message");
+
+        var authorSpan = document.createElement("span");
+        authorSpan.classList.add("author");
+        authorSpan.innerText = "Пользователь3:";
+
+        var timestampSpan = document.createElement("span");
+        timestampSpan.classList.add("timestamp");
+        var now = new Date();
+        var timestamp = now.toLocaleString();
+        timestampSpan.innerText = timestamp;
+
+        var messageParagraph = document.createElement("p");
+        messageParagraph.innerText = message;
+
+        newMessage.appendChild(authorSpan);
+        newMessage.appendChild(timestampSpan);
+        newMessage.appendChild(messageParagraph);
+
+        messageContainer.appendChild(newMessage);
+
+        inputElement.value = "";
+      }
+    }
+
+    var sendButton = document.getElementById("send-button");
+    sendButton.addEventListener("click", sendMessage);
+
+    // Определение языка браузера и применение перевода
+    var userLanguage = navigator.language || navigator.userLanguage;
+    var lang = userLanguage.split('-')[0];
+    var translations = {
+      'ru': {
+        'welcome': 'Добро пожаловать!',
+        'placeholder': 'Введите сообщение',
+        'send': 'Отправить'
+      },
+      'en': {
+        'welcome': 'Welcome!',
+        'placeholder': 'Enter a message',
+        'send': 'Send'
+      }
+    };
+
+    var welcomeElement = document.querySelector('h1');
+    var inputPlaceholder = document.getElementById('message-input');
+    var sendButtonText = document.getElementById('send-button');
+
+    if (translations[lang]) {
+      welcomeElement.innerText = translations[lang].welcome;
+      inputPlaceholder.placeholder = translations[lang].placeholder;
+      sendButtonText.innerText = translations[lang].send;
+    }
+  </script>
+</body>
+</html>
