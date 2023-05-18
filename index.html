@@ -146,6 +146,9 @@
           message: message,
           timestamp: timestamp
         });
+
+        // Сохранение сообщений в локальном хранилище
+        localStorage.setItem("messages", JSON.stringify(messages));
       }
     }
 
@@ -208,28 +211,34 @@
     // Восстановление сохраненных сообщений
     var messageContainer = document.getElementById("message-container");
 
-    for (var i = 0; i < messages.length; i++) {
-      var savedMessage = messages[i];
+    var storedMessages = localStorage.getItem("messages");
 
-      var newMessage = document.createElement("div");
-      newMessage.classList.add("message");
+    if (storedMessages) {
+      messages = JSON.parse(storedMessages);
 
-      var authorSpan = document.createElement("span");
-      authorSpan.classList.add("author");
-      authorSpan.innerText = savedMessage.nickname + ":";
+      for (var i = 0; i < messages.length; i++) {
+        var savedMessage = messages[i];
 
-      var timestampSpan = document.createElement("span");
-      timestampSpan.classList.add("timestamp");
-      timestampSpan.innerText = savedMessage.timestamp;
+        var newMessage = document.createElement("div");
+        newMessage.classList.add("message");
 
-      var messageParagraph = document.createElement("p");
-      messageParagraph.innerText = savedMessage.message;
+        var authorSpan = document.createElement("span");
+        authorSpan.classList.add("author");
+        authorSpan.innerText = savedMessage.nickname + ":";
 
-      newMessage.appendChild(authorSpan);
-      newMessage.appendChild(timestampSpan);
-      newMessage.appendChild(messageParagraph);
+        var timestampSpan = document.createElement("span");
+        timestampSpan.classList.add("timestamp");
+        timestampSpan.innerText = savedMessage.timestamp;
 
-      messageContainer.appendChild(newMessage);
+        var messageParagraph = document.createElement("p");
+        messageParagraph.innerText = savedMessage.message;
+
+        newMessage.appendChild(authorSpan);
+        newMessage.appendChild(timestampSpan);
+        newMessage.appendChild(messageParagraph);
+
+        messageContainer.appendChild(newMessage);
+      }
     }
   </script>
 </body>
